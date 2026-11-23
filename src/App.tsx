@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { RolePreviewProvider } from './context/RolePreviewContext';
 import { AppLayout } from './components/layout/AppLayout';
 import { LandingPage } from './pages/LandingPage';
+import { FluidShowcasePage } from './pages/FluidShowcasePage';
 
 // Faculty pages
 import { FacultyDashboard } from './pages/faculty/FacultyDashboard';
@@ -26,8 +27,10 @@ export function App() {
     <RolePreviewProvider>
       <BrowserRouter>
         <Routes>
-          {/* Public Landing & Role Select */}
-          <Route path="/" element={<LandingPage />} />
+          {/* Public Landing & Dynamic Showcase */}
+          <Route path="/" element={<FluidShowcasePage />} />
+          <Route path="/home" element={<LandingPage />} />
+          <Route path="/fluid" element={<FluidShowcasePage />} />
 
           {/* Application Layout for Faculty & Student */}
           <Route element={<AppLayout />}>

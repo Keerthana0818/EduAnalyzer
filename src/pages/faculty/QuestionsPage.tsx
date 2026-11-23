@@ -8,101 +8,45 @@ import { Select } from '../../components/common/Select';
 import { Input } from '../../components/common/Input';
 import { 
   Sparkles, 
-  Plus, 
-  Check, 
   X, 
   Edit3
 } from 'lucide-react';
 import { ORDERED_BLOOM_LEVELS, BLOOM_LEVELS } from '../../lib/bloomsTaxonomy';
 import type { BloomLevel } from '../../lib/bloomsTaxonomy';
+import { MockDatabase } from '../../services/mockDatabase';
+import type { QuizQuestion } from '../../services/mockDatabase';
 
 export const QuestionsPage: React.FC = () => {
   const [isGenModalOpen, setIsGenModalOpen] = useState(false);
   const [filterBloom, setFilterBloom] = useState('all');
   const [isGenerating, setIsGenerating] = useState(false);
+  const [selectedTargetBloom, setSelectedTargetBloom] = useState<BloomLevel>('apply');
+  const [selectedDifficulty, setSelectedDifficulty] = useState<'easy' | 'medium' | 'hard'>('medium');
 
-  const [questions, setQuestions] = useState([
-    {
-      id: 'q1',
-      text: 'Which asymptotic notation provides a tight bound on the running time of an algorithm?',
-      type: 'mcq',
-      bloomLevel: 'remember' as BloomLevel,
-      difficulty: 'easy',
-      marks: 2,
-      topic: 'Asymptotic Analysis',
-      options: [
-        { id: 'A', text: 'Big-O (O)' },
-        { id: 'B', text: 'Big-Omega (Ω)' },
-        { id: 'C', text: 'Big-Theta (Θ)' },
-        { id: 'D', text: 'Little-o (o)' },
-      ],
-      correctAnswer: 'C',
-      explanation: 'Big-Theta (Θ) defines both upper and lower bounds, giving a tight bound on complexity.',
-      isAiGenerated: true,
-      isApproved: true,
-    },
-    {
-      id: 'q2',
-      text: 'Given an AVL tree where a right-heavy node has a left-heavy right child, what rotation sequence is required to restore balance?',
-      type: 'mcq',
-      bloomLevel: 'apply' as BloomLevel,
-      difficulty: 'medium',
-      marks: 4,
-      topic: 'AVL Trees',
-      options: [
-        { id: 'A', text: 'Single Left Rotation' },
-        { id: 'B', text: 'Single Right Rotation' },
-        { id: 'C', text: 'Right-Left (RL) Double Rotation' },
-        { id: 'D', text: 'Left-Right (LR) Double Rotation' },
-      ],
-      correctAnswer: 'C',
-      explanation: 'A Right-Left (RL) rotation first rotates the right child to the right, then the unbalanced node to the left.',
-      isAiGenerated: true,
-      isApproved: true,
-    },
-    {
-      id: 'q3',
-      text: 'Analyze why Dijkstra’s algorithm fails on graphs with negative edge cycles, while Bellman-Ford succeeds.',
-      type: 'mcq',
-      bloomLevel: 'analyze' as BloomLevel,
-      difficulty: 'hard',
-      marks: 5,
-      topic: 'Graph Algorithms',
-      options: [
-        { id: 'A', text: 'Dijkstra assumes optimal subpaths can never be decreased once marked visited (greedy invariant).' },
-        { id: 'B', text: 'Bellman-Ford only checks source adjacent edges.' },
-        { id: 'C', text: 'Dijkstra requires directed acyclic graphs.' },
-        { id: 'D', text: 'Negative weights invert adjacency matrices.' },
-      ],
-      correctAnswer: 'A',
-      explanation: 'Dijkstra greedily marks nodes finalized; a negative weight later could invalidate already finalized shortest distances.',
-      isAiGenerated: true,
-      isApproved: true,
-    },
-  ]);
+  const [questions, setQuestions] = useState<QuizQuestion[]>(MockDatabase.getQuestions());
 
   const handleSimulateAiGeneration = () => {
     setIsGenerating(true);
     setTimeout(() => {
-      const generated = {
+      const generated: QuizQuestion = {
         id: 'q_' + Date.now(),
-        text: 'Evaluate whether an Adjacency Matrix or Adjacency List is superior when computing BFS on a sparse graph with V=100,000 and E=200,000.',
-        type: 'mcq',
-        bloomLevel: 'evaluate' as BloomLevel,
-        difficulty: 'medium',
-        marks: 5,
-        topic: 'Graph Representations',
+        courseCode: 'CS-301',
+        topic: 'Graph Shortest Paths',
+        bloomLevel: selectedTargetBloom,
+        difficulty: selectedDifficulty,
+        marks: selectedTargetBloom === 'evaluate' || selectedTargetBloom === 'create' ? 6 : 4,
+        text: `[Gemini Synthesized • ${BLOOM_LEVELS[selectedTargetBloom].label}] Evaluate why Dijkstra fails on negative cycles while Bellman-Ford can report negative cycles in O(V*E) time.`,
         options: [
-          { id: 'A', text: 'Adjacency Matrix: O(1) edge lookup outweighs space penalty.' },
-          { id: 'B', text: 'Adjacency List: Space O(V+E) and BFS time O(V+E) far outperform Matrix space O(V²) and time O(V²).' },
-          { id: 'C', text: 'Both have equivalent performance on sparse graphs.' },
-          { id: 'D', text: 'Matrix requires less cache misses during pointer chasing.' },
+          { id: 'A', text: 'Dijkstra greedily marks nodes visited without reconsidering distances when negative edges are encountered.' },
+          { id: 'B', text: 'Bellman-Ford inverts the adjacency matrix.' },
+          { id: 'C', text: 'Dijkstra requires acyclic undirected trees.' },
+          { id: 'D', text: 'Negative weights only exist in topological sorts.' },
         ],
-        correctAnswer: 'B',
-        explanation: 'For sparse graphs with 100k vertices, a matrix requires 10 billion entries (~10GB RAM), whereas list needs only ~1.2MB and scans only existing edges.',
-        isAiGenerated: true,
-        isApproved: false,
+        correctAnswer: 'A',
+        explanation: 'Dijkstra greedily locks in shortest distances once popped from the priority queue. A negative edge relaxed later would violate this invariant.',
       };
+
+      MockDatabase.addQuestion(generated);
       setQuestions([generated, ...questions]);
       setIsGenerating(false);
       setIsGenModalOpen(false);
@@ -116,15 +60,13 @@ export const QuestionsPage: React.FC = () => {
   return (
     <div className="space-y-6">
       <PageHeader
-        title="AI Question Bank"
+        title="AI Question Bank & Synthesis"
         description="Generate, review, and curate assessment questions mapped to Bloom's Taxonomy cognitive levels and course units."
         actions={
           <div className="flex gap-2.5">
-            <Button variant="outline" leftIcon={<Plus className="w-4 h-4" />}>
-              Manual Question
-            </Button>
             <Button 
-              leftIcon={<Sparkles className="w-4 h-4 text-white" />} 
+              variant="teal" 
+              leftIcon={<Sparkles className="w-4 h-4 text-slate-950" />} 
               onClick={() => setIsGenModalOpen(true)}
             >
               Generate with Gemini AI
@@ -137,7 +79,7 @@ export const QuestionsPage: React.FC = () => {
       <div className="flex items-center gap-1.5 overflow-x-auto pb-2">
         <button
           onClick={() => setFilterBloom('all')}
-          className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${filterBloom === 'all' ? 'bg-slate-900 text-white shadow-xs' : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'}`}
+          className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${filterBloom === 'all' ? 'bg-teal-500 text-slate-950 shadow-glow-teal' : 'bg-white/[0.04] text-slate-300 hover:bg-white/10 border border-white/10'}`}
         >
           All Levels ({questions.length})
         </button>
@@ -147,7 +89,7 @@ export const QuestionsPage: React.FC = () => {
             <button
               key={lvl}
               onClick={() => setFilterBloom(lvl)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 ${filterBloom === lvl ? 'bg-brand-600 text-white shadow-xs' : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'}`}
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${filterBloom === lvl ? 'bg-teal-500 text-slate-950 shadow-glow-teal' : 'bg-white/[0.04] text-slate-300 hover:bg-white/10 border border-white/10'}`}
             >
               <span>{BLOOM_LEVELS[lvl].label}</span>
               <span className="text-[10px] opacity-80">({count})</span>
@@ -159,53 +101,39 @@ export const QuestionsPage: React.FC = () => {
       {/* Questions List */}
       <div className="space-y-4">
         {filteredQuestions.map((q) => (
-          <Card key={q.id} className={!q.isApproved ? 'border-amber-300 ring-2 ring-amber-100' : ''}>
+          <Card key={q.id} className="border border-white/10 hover:border-teal-400/40 transition-all">
             <CardHeader className="pb-3 flex flex-row items-start justify-between">
-              <div className="space-y-1">
+              <div className="space-y-1.5 max-w-3xl">
                 <div className="flex flex-wrap items-center gap-2">
                   <Badge variant={q.bloomLevel} size="sm">
                     {BLOOM_LEVELS[q.bloomLevel].label}
                   </Badge>
-                  <span className="text-xs text-slate-500 font-medium">Topic: {q.topic}</span>
+                  <span className="text-xs text-slate-400 font-medium">Topic: {q.topic}</span>
                   <Badge variant="outline" size="sm" className="capitalize">{q.difficulty}</Badge>
-                  <span className="text-xs font-semibold text-slate-700">{q.marks} Marks</span>
-                  {q.isAiGenerated && (
-                    <span className="inline-flex items-center gap-1 text-[11px] font-bold text-brand-600 bg-brand-50 px-2 py-0.5 rounded border border-brand-200">
-                      <Sparkles className="w-3 h-3" /> Gemini AI
-                    </span>
-                  )}
-                  {!q.isApproved && (
-                    <Badge variant="warning" size="sm">Pending Approval</Badge>
-                  )}
+                  <span className="text-xs font-bold text-teal-300">{q.marks} Marks</span>
+                  <span className="inline-flex items-center gap-1 text-[10px] font-bold text-teal-300 bg-teal-500/20 px-2 py-0.5 rounded-full border border-teal-500/30">
+                    <Sparkles className="w-3 h-3" /> Gemini AI
+                  </span>
                 </div>
-                <h4 className="text-sm sm:text-base font-semibold text-slate-900 mt-2">{q.text}</h4>
+                <h4 className="text-sm sm:text-base font-bold text-white mt-2 leading-relaxed">{q.text}</h4>
               </div>
 
-              <div className="flex items-center gap-1 shrink-0">
-                {!q.isApproved ? (
-                  <>
-                    <Button 
-                      size="sm" 
-                      variant="success" 
-                      leftIcon={<Check className="w-3.5 h-3.5" />}
-                      onClick={() => setQuestions(questions.map(x => x.id === q.id ? { ...x, isApproved: true } : x))}
-                    >
-                      Approve
-                    </Button>
-                    <Button 
-                      size="sm" 
-                      variant="danger" 
-                      leftIcon={<X className="w-3.5 h-3.5" />}
-                      onClick={() => setQuestions(questions.filter(x => x.id !== q.id))}
-                    >
-                      Reject
-                    </Button>
-                  </>
-                ) : (
-                  <Button size="sm" variant="ghost">
-                    <Edit3 className="w-4 h-4 text-slate-400" />
-                  </Button>
-                )}
+              <div className="flex items-center gap-1.5 shrink-0">
+                <Button 
+                  size="sm" 
+                  variant="outline" 
+                  leftIcon={<Edit3 className="w-3.5 h-3.5" />}
+                >
+                  Edit
+                </Button>
+                <Button 
+                  size="sm" 
+                  variant="ghost" 
+                  className="text-rose-400 hover:text-rose-300 p-2"
+                  onClick={() => setQuestions(questions.filter(x => x.id !== q.id))}
+                >
+                  <X className="w-4 h-4" />
+                </Button>
               </div>
             </CardHeader>
 
@@ -217,9 +145,9 @@ export const QuestionsPage: React.FC = () => {
                   return (
                     <div
                       key={opt.id}
-                      className={`p-2.5 rounded-lg border text-xs flex items-start gap-2 ${isCorrect ? 'bg-emerald-50/80 border-emerald-300 font-semibold text-emerald-900' : 'bg-slate-50 border-slate-200 text-slate-700'}`}
+                      className={`p-3 rounded-xl border text-xs flex items-start gap-2.5 ${isCorrect ? 'bg-teal-950/60 border-teal-400 text-teal-200 font-bold shadow-[0_0_10px_rgba(0,229,190,0.2)]' : 'bg-white/[0.02] border-white/10 text-slate-300'}`}
                     >
-                      <span className={`w-5 h-5 rounded-full flex items-center justify-center font-bold text-[11px] shrink-0 ${isCorrect ? 'bg-emerald-600 text-white' : 'bg-slate-200 text-slate-700'}`}>
+                      <span className={`w-5 h-5 rounded-full flex items-center justify-center font-bold text-[10px] shrink-0 ${isCorrect ? 'bg-teal-400 text-slate-950' : 'bg-white/10 text-slate-300'}`}>
                         {opt.id}
                       </span>
                       <span>{opt.text}</span>
@@ -229,8 +157,8 @@ export const QuestionsPage: React.FC = () => {
               </div>
 
               {/* Rationale */}
-              <div className="p-3 rounded-lg bg-slate-50 border border-slate-200/80 text-xs text-slate-600">
-                <span className="font-semibold text-slate-800">Answer Key & Explanation: </span>
+              <div className="p-3.5 rounded-xl bg-black/40 border border-white/10 text-xs text-slate-300">
+                <span className="font-bold text-teal-300">Deterministic Answer Key: </span>
                 {q.explanation}
               </div>
             </CardContent>
@@ -242,10 +170,10 @@ export const QuestionsPage: React.FC = () => {
       <Modal
         isOpen={isGenModalOpen}
         onClose={() => setIsGenModalOpen(false)}
-        title="Generate Questions with Google Gemini AI"
+        title="Generate Bloom Questions with Google Gemini"
         description="Select learning outcomes and cognitive levels. Questions are produced with structured JSON answer keys and cognitive explanations."
       >
-        <div className="space-y-4">
+        <div className="space-y-4 text-xs">
           <Select
             label="Target Course & Unit"
             options={[
@@ -260,7 +188,8 @@ export const QuestionsPage: React.FC = () => {
               value: lvl,
               label: `${BLOOM_LEVELS[lvl].label} (${BLOOM_LEVELS[lvl].cognitiveProcesses.join(', ')})`,
             }))}
-            defaultValue="apply"
+            value={selectedTargetBloom}
+            onChange={(e) => setSelectedTargetBloom(e.target.value as BloomLevel)}
           />
           <div className="grid grid-cols-2 gap-3">
             <Select
@@ -270,15 +199,16 @@ export const QuestionsPage: React.FC = () => {
                 { value: 'medium', label: 'Medium (Standard)' },
                 { value: 'hard', label: 'Hard (Complex reasoning)' },
               ]}
-              defaultValue="medium"
+              value={selectedDifficulty}
+              onChange={(e) => setSelectedDifficulty(e.target.value as any)}
             />
             <Input label="Number of Questions" type="number" defaultValue="3" min={1} max={10} />
           </div>
 
-          <div className="p-3 rounded-xl bg-brand-50/70 border border-brand-200 text-xs text-brand-900 flex items-start gap-2.5">
-            <Sparkles className="w-4 h-4 text-brand-600 shrink-0 mt-0.5" />
+          <div className="p-3.5 rounded-xl bg-teal-950/40 border border-teal-500/30 text-teal-200 flex items-start gap-2.5">
+            <Sparkles className="w-4 h-4 text-teal-400 shrink-0 mt-0.5" />
             <div>
-              <span className="font-bold">Faculty Review Safeguard:</span> Generated questions will be placed in your queue for review, allowing you to edit text, swap options, approve or reject before publishing to students.
+              <span className="font-bold">Faculty Approval Workflow:</span> Generated questions will be placed directly in your bank, with options and explanation rationale ready for quiz publishing.
             </div>
           </div>
 
@@ -286,8 +216,8 @@ export const QuestionsPage: React.FC = () => {
             <Button variant="outline" onClick={() => setIsGenModalOpen(false)}>
               Cancel
             </Button>
-            <Button isLoading={isGenerating} onClick={handleSimulateAiGeneration}>
-              Synthesize Questions
+            <Button variant="teal" isLoading={isGenerating} onClick={handleSimulateAiGeneration}>
+              Synthesize & Save to Bank
             </Button>
           </div>
         </div>

@@ -91,7 +91,7 @@ export const OutcomesPage: React.FC = () => {
               onChange={(e) => setSelectedCourse(e.target.value)}
               className="w-72"
             />
-            <Button leftIcon={<Plus className="w-4 h-4" />} onClick={() => setIsModalOpen(true)}>
+            <Button variant="teal" leftIcon={<Plus className="w-4 h-4 text-slate-950" />} onClick={() => setIsModalOpen(true)}>
               Add Outcome
             </Button>
           </div>
@@ -104,12 +104,12 @@ export const OutcomesPage: React.FC = () => {
           const meta = BLOOM_LEVELS[lvl];
           const count = outcomes.filter((o) => o.bloomLevel === lvl).length;
           return (
-            <Card key={lvl} className="text-center p-3 border-t-4" style={{ borderTopColor: meta.color.hex }}>
-              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 block">
+            <Card key={lvl} className="text-center p-3 border-t-2" style={{ borderTopColor: meta.color.hex }}>
+              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">
                 {meta.label}
               </span>
-              <span className="text-xl font-extrabold text-slate-900 mt-0.5 block">{count}</span>
-              <span className="text-[10px] text-slate-400">Outcomes Defined</span>
+              <span className="text-xl font-extrabold text-white mt-0.5 block">{count}</span>
+              <span className="text-[10px] text-teal-400">Outcomes</span>
             </Card>
           );
         })}
@@ -121,12 +121,12 @@ export const OutcomesPage: React.FC = () => {
           <CardTitle>Defined Course Outcomes</CardTitle>
           <CardDescription>Each outcome directs assessment generation and cognitive gap detection</CardDescription>
         </CardHeader>
-        <CardContent className="p-0 divide-y divide-slate-100">
+        <CardContent className="p-0 divide-y divide-white/[0.06]">
           {outcomes.map((item) => (
-            <div key={item.id} className="p-5 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-slate-50/70 transition-colors">
+            <div key={item.id} className="p-5 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-white/[0.02] transition-colors">
               <div className="space-y-1.5 max-w-3xl">
                 <div className="flex items-center gap-2">
-                  <span className="text-xs font-bold text-slate-800 bg-slate-100 px-2 py-0.5 rounded border border-slate-200">
+                  <span className="text-xs font-bold text-white bg-white/10 px-2 py-0.5 rounded border border-white/10">
                     {item.code}
                   </span>
                   <Badge variant={item.bloomLevel} size="sm">
@@ -136,14 +136,14 @@ export const OutcomesPage: React.FC = () => {
                     Target: {item.targetScore}%
                   </span>
                 </div>
-                <p className="text-sm text-slate-700 leading-snug">{item.description}</p>
+                <p className="text-sm text-slate-200 leading-snug">{item.description}</p>
                 <div className="text-[11px] text-slate-400">
                   Associated Verbs: {BLOOM_LEVELS[item.bloomLevel].actionVerbs.slice(0, 4).join(', ')}
                 </div>
               </div>
 
               <div className="flex items-center gap-3">
-                <span className="text-xs text-slate-500 font-medium">
+                <span className="text-xs text-teal-400 font-medium">
                   {item.questionsCount} Questions tagged
                 </span>
                 <Button size="sm" variant="outline">
@@ -162,7 +162,7 @@ export const OutcomesPage: React.FC = () => {
         title="Add Learning Outcome"
         description="Associate an outcome with a specific cognitive domain from Bloom's Revised Taxonomy."
       >
-        <form onSubmit={handleAddOutcome} className="space-y-4">
+        <form onSubmit={handleAddOutcome} className="space-y-4 text-xs">
           <Input
             label="Outcome Code"
             placeholder="e.g. CLO-5"
@@ -180,9 +180,9 @@ export const OutcomesPage: React.FC = () => {
             onChange={(e) => setForm({ ...form, bloomLevel: e.target.value as BloomLevel })}
           />
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1.5">Outcome Statement</label>
+            <label className="block text-xs font-semibold text-slate-300 mb-1.5">Outcome Statement</label>
             <textarea
-              className="w-full rounded-lg border border-slate-300 p-2.5 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
+              className="w-full rounded-xl border border-white/10 bg-[#070B14] p-3 text-slate-100 text-sm focus:border-teal-400 focus:outline-none"
               rows={3}
               placeholder="Students should be able to..."
               required
@@ -202,7 +202,7 @@ export const OutcomesPage: React.FC = () => {
             <Button type="button" variant="outline" onClick={() => setIsModalOpen(false)}>
               Cancel
             </Button>
-            <Button type="submit">Save Outcome</Button>
+            <Button variant="teal" type="submit">Save Outcome</Button>
           </div>
         </form>
       </Modal>

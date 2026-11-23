@@ -8,8 +8,8 @@ export const StudentCoursesPage: React.FC = () => {
   const [selectedCourse, setSelectedCourse] = useState('cs301');
 
   const enrolled = [
-    { id: 'cs301', code: 'CS-301', title: 'Data Structures and Algorithms', faculty: 'Prof. Sarah Jenkins' },
-    { id: 'cs402', code: 'CS-402', title: 'Database Management Systems', faculty: 'Dr. Marcus Vance' },
+    { id: 'cs301', code: 'CS-301', title: 'Data Structures and Algorithms', faculty: 'Dr. Elena Vance' },
+    { id: 'cs402', code: 'CS-402', title: 'Database Management Systems', faculty: 'Prof. Marcus Vance' },
   ];
 
   const units = [
@@ -42,7 +42,7 @@ export const StudentCoursesPage: React.FC = () => {
     <div className="space-y-6">
       <PageHeader
         title="My Enrolled Courses"
-        description="Access materials uploaded by your professors, organized by unit and topic for seamless studying."
+        description="Access materials uploaded by Dr. Elena and department faculty, organized by unit and topic."
       />
 
       {/* Course Selector Tabs */}
@@ -51,7 +51,7 @@ export const StudentCoursesPage: React.FC = () => {
           <button
             key={c.id}
             onClick={() => setSelectedCourse(c.id)}
-            className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${selectedCourse === c.id ? 'bg-emerald-600 text-white shadow-sm' : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50'}`}
+            className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${selectedCourse === c.id ? 'bg-teal-500 text-slate-950 shadow-glow-teal' : 'bg-white/[0.04] text-slate-300 border border-white/10 hover:bg-white/10'}`}
           >
             <span>{c.code}</span>
             <span className="font-normal opacity-90 hidden sm:inline">• {c.title}</span>
@@ -63,29 +63,29 @@ export const StudentCoursesPage: React.FC = () => {
       <div className="space-y-4">
         {units.map((unit) => (
           <Card key={unit.unitNumber}>
-            <CardHeader className="pb-3 bg-slate-50/50">
+            <CardHeader className="pb-3 bg-white/[0.02]">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2.5">
-                  <span className="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-800 font-bold text-xs flex items-center justify-center">
+                  <span className="w-8 h-8 rounded-xl bg-teal-500/20 text-teal-300 font-bold text-xs flex items-center justify-center border border-teal-500/30">
                     U{unit.unitNumber}
                   </span>
                   <div>
-                    <CardTitle className="text-sm font-bold text-slate-900">
+                    <CardTitle className="text-sm font-bold text-white">
                       Unit {unit.unitNumber}: {unit.title}
                     </CardTitle>
-                    <p className="text-[11px] text-slate-500">{unit.materials.length} Materials Uploaded</p>
+                    <p className="text-[11px] text-slate-400">{unit.materials.length} Materials Available</p>
                   </div>
                 </div>
               </div>
             </CardHeader>
-            <CardContent className="p-0 divide-y divide-slate-100">
+            <CardContent className="p-0 divide-y divide-white/[0.06]">
               {unit.materials.map((m, idx) => (
-                <div key={idx} className="p-4 flex items-center justify-between hover:bg-slate-50 transition-colors">
+                <div key={idx} className="p-4 flex items-center justify-between hover:bg-white/[0.02] transition-colors">
                   <div className="flex items-center gap-3">
-                    <FileText className="w-5 h-5 text-emerald-600" />
+                    <FileText className="w-5 h-5 text-teal-400" />
                     <div>
-                      <h5 className="text-xs font-semibold text-slate-800">{m.title}</h5>
-                      <span className="text-[11px] text-slate-400">{m.type} • {m.size}</span>
+                      <h5 className="text-xs font-semibold text-slate-200">{m.title}</h5>
+                      <span className="text-[10px] text-slate-500">{m.type} • {m.size}</span>
                     </div>
                   </div>
                   <Button size="sm" variant="outline" leftIcon={<Download className="w-3.5 h-3.5" />}>

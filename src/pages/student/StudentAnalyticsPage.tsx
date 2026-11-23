@@ -40,47 +40,47 @@ export const StudentAnalyticsPage: React.FC = () => {
         description="Multi-dimensional analysis of your learning ability measured through Bloom's Taxonomy and deterministic quiz outcomes."
         actions={
           <Button 
-            className="bg-brand-600 hover:bg-brand-700 text-white"
-            leftIcon={<Sparkles className="w-4 h-4" />}
+            variant="teal"
+            leftIcon={<Sparkles className="w-4 h-4 text-slate-950" />}
             onClick={() => navigate('/student/recommendations')}
           >
-            View Personalized AI Action Plan
+            Personalized Action Plan
           </Button>
         }
       />
 
       {/* High-Level Mastery Summary */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card className="bg-emerald-50/50 border-emerald-200">
+        <Card className="bg-emerald-950/20 border-emerald-500/30">
           <CardContent className="p-5 flex items-center justify-between">
             <div>
-              <span className="text-xs font-semibold text-emerald-800 uppercase tracking-wider">Top Cognitive Strength</span>
-              <h3 className="text-xl font-bold text-emerald-950 mt-1">Remember & Apply</h3>
-              <p className="text-xs text-emerald-700 mt-0.5">Average 90% accuracy in algorithm execution</p>
+              <span className="text-xs font-bold text-emerald-400 uppercase tracking-wider">Top Cognitive Strength</span>
+              <h3 className="text-xl font-bold text-white mt-1">Remember & Apply</h3>
+              <p className="text-xs text-slate-300 mt-0.5">Average 90% accuracy in algorithm execution</p>
             </div>
-            <Award className="w-8 h-8 text-emerald-600" />
+            <Award className="w-8 h-8 text-emerald-400" />
           </CardContent>
         </Card>
 
-        <Card className="bg-amber-50/50 border-amber-200">
+        <Card className="bg-amber-950/20 border-amber-500/30">
           <CardContent className="p-5 flex items-center justify-between">
             <div>
-              <span className="text-xs font-semibold text-amber-800 uppercase tracking-wider">Primary Growth Area</span>
-              <h3 className="text-xl font-bold text-amber-950 mt-1">Analyze (58%)</h3>
-              <p className="text-xs text-amber-700 mt-0.5">Struggling with multi-step rotation invariants</p>
+              <span className="text-xs font-bold text-amber-400 uppercase tracking-wider">Primary Growth Area</span>
+              <h3 className="text-xl font-bold text-white mt-1">Analyze (58%)</h3>
+              <p className="text-xs text-slate-300 mt-0.5">Struggling with multi-step rotation invariants</p>
             </div>
-            <AlertTriangle className="w-8 h-8 text-amber-600" />
+            <AlertTriangle className="w-8 h-8 text-amber-400" />
           </CardContent>
         </Card>
 
-        <Card className="bg-brand-50/50 border-brand-200">
+        <Card className="bg-cyan-950/20 border-cyan-500/30">
           <CardContent className="p-5 flex items-center justify-between">
             <div>
-              <span className="text-xs font-semibold text-brand-800 uppercase tracking-wider">Overall Cognitive Index</span>
-              <h3 className="text-xl font-bold text-brand-950 mt-1">72.6 / 100</h3>
-              <p className="text-xs text-brand-700 mt-0.5">Calculated across 8 deterministic assessments</p>
+              <span className="text-xs font-bold text-cyan-400 uppercase tracking-wider">Overall Cognitive Index</span>
+              <h3 className="text-xl font-bold text-white mt-1">74.2 / 100</h3>
+              <p className="text-xs text-slate-300 mt-0.5">Calculated across deterministic assessments</p>
             </div>
-            <Activity className="w-8 h-8 text-brand-600" />
+            <Activity className="w-8 h-8 text-cyan-400" />
           </CardContent>
         </Card>
       </div>
@@ -100,11 +100,11 @@ export const StudentAnalyticsPage: React.FC = () => {
                     <Badge variant={item.level} size="sm">
                       {BLOOM_LEVELS[item.level].label}
                     </Badge>
-                    <span className="font-semibold text-slate-700">{item.label}</span>
+                    <span className="font-semibold text-slate-200">{item.label}</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="text-slate-500 font-medium">{item.status}</span>
-                    <span className="font-bold text-slate-800">{item.score}%</span>
+                    <span className="text-slate-400 font-medium">{item.status}</span>
+                    <span className="font-bold text-teal-300">{item.score}%</span>
                   </div>
                 </div>
                 <ProgressBar value={item.score} variant={item.level} size="md" />
@@ -123,12 +123,12 @@ export const StudentAnalyticsPage: React.FC = () => {
             {topicScores.map((t, idx) => (
               <div key={idx} className="space-y-1.5">
                 <div className="flex items-center justify-between text-xs">
-                  <span className="font-semibold text-slate-800">{t.topic}</span>
-                  <span className="font-bold text-slate-700">{t.score}%</span>
+                  <span className="font-semibold text-slate-200">{t.topic}</span>
+                  <span className="font-bold text-teal-300">{t.score}%</span>
                 </div>
                 <ProgressBar 
                   value={t.score} 
-                  variant={t.score >= 80 ? 'success' : t.score >= 60 ? 'warning' : 'danger'} 
+                  variant={t.score >= 80 ? 'teal' : t.score >= 60 ? 'warning' : 'coral'} 
                   size="sm" 
                 />
               </div>

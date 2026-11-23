@@ -35,7 +35,6 @@ export const AnalyticsPage: React.FC = () => {
         }
       />
 
-      {/* High-level cognitive bar metrics */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Card>
           <CardHeader>
@@ -52,11 +51,11 @@ export const AnalyticsPage: React.FC = () => {
                       <Badge variant={item.level} size="sm">
                         {meta.label}
                       </Badge>
-                      <span className="text-slate-500 hidden sm:inline text-[11px] truncate max-w-[200px]">
+                      <span className="text-slate-400 hidden sm:inline text-[11px] truncate max-w-[200px]">
                         {meta.description.slice(0, 38)}...
                       </span>
                     </div>
-                    <span className="font-bold text-slate-800">{item.avg}% Class Average</span>
+                    <span className="font-bold text-teal-300">{item.avg}% Class Average</span>
                   </div>
                   <ProgressBar value={item.avg} variant={item.level} size="md" />
                 </div>
@@ -66,40 +65,41 @@ export const AnalyticsPage: React.FC = () => {
         </Card>
 
         {/* Common Learning Gaps */}
-        <Card className="border-amber-200 bg-amber-50/20">
+        <Card className="border-amber-500/30 bg-amber-950/10">
           <CardHeader>
             <div className="flex items-center gap-2">
-              <AlertTriangle className="w-5 h-5 text-amber-600" />
-              <CardTitle className="text-amber-950">Detected Class Learning Gaps</CardTitle>
+              <AlertTriangle className="w-5 h-5 text-amber-400" />
+              <CardTitle className="text-amber-200">Detected Class Learning Gaps</CardTitle>
             </div>
-            <CardDescription className="text-amber-800">
+            <CardDescription className="text-amber-300/80">
               Aggregated from deterministic assessments identifying topics where more than 35% of students missed points
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
-            <div className="p-3.5 bg-white rounded-xl border border-amber-200/80 shadow-xs space-y-1">
+            <div className="p-3.5 bg-black/40 rounded-xl border border-amber-500/30 space-y-1">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-slate-900">1. AVL Multi-Rotations (Analyze)</span>
-                <span className="text-xs font-semibold text-rose-600">41% Error Rate</span>
+                <span className="text-xs font-bold text-white">1. AVL Multi-Rotations (Analyze)</span>
+                <span className="text-xs font-bold text-rose-400">41% Error Rate</span>
               </div>
-              <p className="text-xs text-slate-600">
+              <p className="text-xs text-slate-300">
                 Students correctly identify unbalanced nodes, but fail to re-calculate parent balance factors after Double Left-Right rotations.
               </p>
             </div>
 
-            <div className="p-3.5 bg-white rounded-xl border border-amber-200/80 shadow-xs space-y-1">
+            <div className="p-3.5 bg-black/40 rounded-xl border border-amber-500/30 space-y-1">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-slate-900">2. Dynamic Programming Optimal Substructure (Evaluate)</span>
-                <span className="text-xs font-semibold text-rose-600">46% Error Rate</span>
+                <span className="text-xs font-bold text-white">2. Dynamic Programming Optimal Substructure (Evaluate)</span>
+                <span className="text-xs font-bold text-rose-400">46% Error Rate</span>
               </div>
-              <p className="text-xs text-slate-600">
+              <p className="text-xs text-slate-300">
                 Difficulty validating whether subproblems are independent when comparing Memoization vs Tabulation space requirements.
               </p>
             </div>
 
             <Button 
               size="sm" 
-              className="w-full mt-2 bg-amber-600 hover:bg-amber-700 text-white"
+              variant="coral"
+              className="w-full mt-2"
               leftIcon={<Sparkles className="w-4 h-4 text-white" />}
             >
               Generate AI Remedial Quiz for Entire Class
@@ -114,14 +114,14 @@ export const AnalyticsPage: React.FC = () => {
           <CardTitle>Students Benefiting from Extra Support</CardTitle>
           <CardDescription>Students with performance under the 60% threshold flagged for personalized AI study plans</CardDescription>
         </CardHeader>
-        <CardContent className="p-0 divide-y divide-slate-100">
+        <CardContent className="p-0 divide-y divide-white/[0.06]">
           {strugglingStudents.map((s, idx) => (
-            <div key={idx} className="p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div key={idx} className="p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-white/[0.02]">
               <div>
-                <h4 className="text-sm font-semibold text-slate-900">{s.name}</h4>
-                <p className="text-xs text-slate-500">{s.email}</p>
+                <h4 className="text-sm font-bold text-white">{s.name}</h4>
+                <p className="text-xs text-slate-400">{s.email}</p>
                 <div className="mt-1 flex items-center gap-2">
-                  <span className="text-xs font-bold text-rose-600">Overall: {s.score}</span>
+                  <span className="text-xs font-bold text-rose-400">Overall: {s.score}</span>
                   <span className="text-xs text-slate-400">• Primary Drop-off:</span>
                   <Badge variant={s.weakBloom} size="sm">
                     {BLOOM_LEVELS[s.weakBloom].label}
@@ -131,11 +131,11 @@ export const AnalyticsPage: React.FC = () => {
 
               <div className="flex items-center gap-2">
                 {s.recommendationSent ? (
-                  <span className="text-xs text-emerald-600 font-semibold px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200">
+                  <span className="text-xs text-teal-300 font-bold px-2.5 py-1 rounded-full bg-teal-500/10 border border-teal-500/30">
                     AI Plan Active
                   </span>
                 ) : (
-                  <Button size="sm">Send AI Remediation Plan</Button>
+                  <Button size="sm" variant="teal">Send AI Remediation Plan</Button>
                 )}
                 <Button size="sm" variant="outline">
                   Inspect Report

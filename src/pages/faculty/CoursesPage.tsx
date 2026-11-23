@@ -81,7 +81,7 @@ export const CoursesPage: React.FC = () => {
         title="Course Management"
         description="Design course curriculum, structure units, and define learning outcome mappings."
         actions={
-          <Button leftIcon={<Plus className="w-4 h-4" />} onClick={() => setIsModalOpen(true)}>
+          <Button variant="teal" leftIcon={<Plus className="w-4 h-4 text-slate-950" />} onClick={() => setIsModalOpen(true)}>
             New Course
           </Button>
         }
@@ -89,28 +89,28 @@ export const CoursesPage: React.FC = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         {courses.map((course) => (
-          <Card key={course.id} className="flex flex-col justify-between hover:shadow-md transition-shadow">
+          <Card key={course.id} className="flex flex-col justify-between hover:border-teal-400/40 transition-all">
             <div>
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold text-brand-600 bg-brand-50 px-2 py-0.5 rounded border border-brand-200">
+                  <span className="text-xs font-bold text-teal-300 bg-teal-500/10 px-2.5 py-0.5 rounded-full border border-teal-500/30">
                     {course.code}
                   </span>
                   <Badge variant={course.isPublished ? 'success' : 'default'} size="sm">
                     {course.isPublished ? 'Published' : 'Draft'}
                   </Badge>
                 </div>
-                <CardTitle className="mt-2 text-base">{course.title}</CardTitle>
-                <CardDescription className="line-clamp-2">{course.description}</CardDescription>
+                <CardTitle className="mt-2 text-base text-white">{course.title}</CardTitle>
+                <CardDescription className="line-clamp-2 text-slate-400">{course.description}</CardDescription>
               </CardHeader>
               <CardContent className="pt-3 pb-2 space-y-3">
-                <div className="flex items-center justify-between text-xs text-slate-500">
+                <div className="flex items-center justify-between text-xs text-slate-400">
                   <span className="flex items-center gap-1.5">
-                    <Users className="w-3.5 h-3.5 text-slate-400" />
+                    <Users className="w-3.5 h-3.5 text-teal-400" />
                     {course.students} Enrolled
                   </span>
                   <span className="flex items-center gap-1.5">
-                    <Layers className="w-3.5 h-3.5 text-slate-400" />
+                    <Layers className="w-3.5 h-3.5 text-cyan-400" />
                     {course.outcomes} Outcomes
                   </span>
                 </div>
@@ -126,7 +126,7 @@ export const CoursesPage: React.FC = () => {
                 </div>
               </CardContent>
             </div>
-            <div className="p-4 bg-slate-50/70 border-t border-slate-100 flex items-center justify-between">
+            <div className="p-4 bg-white/[0.02] border-t border-white/[0.06] flex items-center justify-between">
               <span className="text-xs text-slate-400 font-medium">Faculty Managed</span>
               <Button size="sm" variant="outline" rightIcon={<ExternalLink className="w-3.5 h-3.5" />}>
                 Manage Course
@@ -143,7 +143,7 @@ export const CoursesPage: React.FC = () => {
         title="Create New Course"
         description="Add a new academic course. You will be able to add units, materials, and Bloom-mapped outcomes next."
       >
-        <form onSubmit={handleCreateCourse} className="space-y-4">
+        <form onSubmit={handleCreateCourse} className="space-y-4 text-xs">
           <Input
             label="Course Code"
             placeholder="e.g. CS-301 or MATH-204"
@@ -159,9 +159,9 @@ export const CoursesPage: React.FC = () => {
             onChange={(e) => setForm({ ...form, title: e.target.value })}
           />
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1.5">Course Description</label>
+            <label className="block text-xs font-semibold text-slate-300 mb-1.5">Course Description</label>
             <textarea
-              className="w-full rounded-lg border border-slate-300 p-2.5 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
+              className="w-full rounded-xl border border-white/10 bg-[#070B14] p-3 text-slate-100 text-sm focus:border-teal-400 focus:outline-none"
               rows={3}
               placeholder="Provide a concise syllabus summary..."
               value={form.description}
@@ -172,7 +172,7 @@ export const CoursesPage: React.FC = () => {
             <Button type="button" variant="outline" onClick={() => setIsModalOpen(false)}>
               Cancel
             </Button>
-            <Button type="submit">Create Course</Button>
+            <Button variant="teal" type="submit">Create Course</Button>
           </div>
         </form>
       </Modal>

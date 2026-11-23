@@ -46,26 +46,26 @@ export const RecommendationsPage: React.FC = () => {
         title="Personalized AI Learning Plan"
         description="Targeted cognitive remediation plans synthesized by Google Gemini AI based on your deterministic quiz results."
         badge={
-          <span className="inline-flex items-center gap-1 text-[11px] font-bold text-brand-700 bg-brand-50 px-2.5 py-0.5 rounded-full border border-brand-200">
-            <Sparkles className="w-3.5 h-3.5" /> AI Recommended Roadmap
+          <span className="inline-flex items-center gap-1 text-[11px] font-bold text-teal-300 bg-teal-500/20 px-3 py-1 rounded-full border border-teal-500/40 shadow-glow-teal">
+            <Sparkles className="w-3.5 h-3.5 text-teal-400" /> AI Recommended Roadmap
           </span>
         }
       />
 
       {/* Primary Learning Gap Card */}
-      <Card className="border-indigo-200 bg-gradient-to-r from-white via-indigo-50/20 to-brand-50/30">
+      <Card className="border-teal-500/30 bg-gradient-to-r from-teal-950/20 via-[#0D1526] to-[#0D1526]">
         <CardHeader>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Badge variant="analyze" size="md">Analyze Tier Gap</Badge>
-              <span className="text-xs font-semibold text-slate-500">CS-301 • Unit 2</span>
+              <span className="text-xs font-semibold text-slate-400">CS-301 • Unit 2</span>
             </div>
-            <span className="text-xs text-brand-700 font-bold">Goal: Reach 80% Mastery</span>
+            <span className="text-xs text-teal-300 font-bold">Goal: Reach 80% Mastery</span>
           </div>
-          <CardTitle className="text-base sm:text-lg mt-2 text-slate-900">
+          <CardTitle className="text-base sm:text-lg mt-2 text-white">
             Remediation: AVL Tree Rotations & Invariant Analysis
           </CardTitle>
-          <CardDescription className="text-slate-600 text-xs sm:text-sm">
+          <CardDescription className="text-slate-300 text-xs sm:text-sm">
             Deterministic evaluation from Quiz 2 showed that you have 100% recall of AVL definitions (Remember), but had a 42% accuracy drop when deducing the sequence of child pointer swaps in Double Rotations (Analyze).
           </CardDescription>
         </CardHeader>
@@ -81,22 +81,22 @@ export const RecommendationsPage: React.FC = () => {
           {actionSteps.map((step) => (
             <div
               key={step.step}
-              className={`p-4 rounded-xl border flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-all ${step.completed ? 'bg-slate-50 border-slate-200 opacity-80' : 'bg-white border-brand-200 shadow-xs'}`}
+              className={`p-4 rounded-2xl border flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-all ${step.completed ? 'bg-white/[0.02] border-white/10 opacity-70' : 'bg-white/[0.04] border-teal-500/30 shadow-glow-teal'}`}
             >
               <div className="flex items-start gap-3.5">
                 <div
-                  className={`w-7 h-7 rounded-full flex items-center justify-center font-bold text-xs shrink-0 mt-0.5 ${step.completed ? 'bg-emerald-100 text-emerald-800' : 'bg-brand-100 text-brand-700'}`}
+                  className={`w-8 h-8 rounded-xl flex items-center justify-center font-bold text-xs shrink-0 mt-0.5 ${step.completed ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40' : 'bg-teal-500/20 text-teal-300 border border-teal-500/40'}`}
                 >
-                  {step.completed ? <CheckCircle2 className="w-4 h-4 text-emerald-600" /> : step.step}
+                  {step.completed ? <CheckCircle2 className="w-4 h-4 text-emerald-400" /> : step.step}
                 </div>
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
-                    <h4 className="text-sm font-bold text-slate-900">{step.title}</h4>
-                    <span className="text-[11px] text-slate-400 font-medium">({step.estMinutes} mins)</span>
+                    <h4 className="text-sm font-bold text-white">{step.title}</h4>
+                    <span className="text-[11px] text-teal-400 font-medium">({step.estMinutes} mins)</span>
                   </div>
-                  <p className="text-xs text-slate-600 leading-relaxed">{step.description}</p>
+                  <p className="text-xs text-slate-300 leading-relaxed">{step.description}</p>
                   {step.materialLink && (
-                    <div className="pt-1 flex items-center gap-1 text-[11px] font-semibold text-brand-600 hover:text-brand-800 cursor-pointer">
+                    <div className="pt-1 flex items-center gap-1 text-[11px] font-semibold text-teal-400 hover:text-teal-300 cursor-pointer">
                       <FileText className="w-3.5 h-3.5" />
                       <span>{step.materialLink}</span>
                     </div>
@@ -107,13 +107,14 @@ export const RecommendationsPage: React.FC = () => {
               {!step.completed ? (
                 <Button 
                   size="sm" 
+                  variant="teal"
                   className="shrink-0 self-start sm:self-center"
                   onClick={() => setIsQuizModalOpen(true)}
                 >
                   Start Activity
                 </Button>
               ) : (
-                <span className="text-xs text-emerald-600 font-semibold flex items-center gap-1 self-start sm:self-center">
+                <span className="text-xs text-emerald-400 font-bold flex items-center gap-1 self-start sm:self-center">
                   <CheckCircle2 className="w-3.5 h-3.5" /> Completed
                 </span>
               )}
@@ -129,8 +130,8 @@ export const RecommendationsPage: React.FC = () => {
         title="Adaptive Practice Problem"
         description="Bloom's Level: Analyze • Target Concept: Right-Left Double Rotations"
       >
-        <div className="space-y-4 text-xs">
-          <p className="font-semibold text-slate-800 text-sm">
+        <div className="space-y-4 text-xs text-slate-200">
+          <p className="font-semibold text-white text-sm">
             A node X has balance factor -2 (right-heavy). Its right child Y has balance factor +1 (left-heavy). Which node becomes the new root of this subtree after complete rebalancing?
           </p>
           <div className="space-y-2">
@@ -142,11 +143,11 @@ export const RecommendationsPage: React.FC = () => {
             ].map((opt) => (
               <label
                 key={opt.id}
-                className="flex items-center gap-2.5 p-3 rounded-lg border border-slate-200 bg-slate-50 hover:bg-slate-100 cursor-pointer"
+                className="flex items-center gap-2.5 p-3 rounded-xl border border-white/10 bg-white/[0.02] hover:bg-white/[0.06] cursor-pointer"
               >
-                <input type="radio" name="practice_opt" className="text-brand-600" />
-                <span className="font-bold text-slate-700">{opt.id}.</span>
-                <span className="text-slate-800">{opt.text}</span>
+                <input type="radio" name="practice_opt" className="text-teal-400" />
+                <span className="font-bold text-teal-300">{opt.id}.</span>
+                <span className="text-slate-200">{opt.text}</span>
               </label>
             ))}
           </div>
@@ -156,7 +157,7 @@ export const RecommendationsPage: React.FC = () => {
               Close
             </Button>
             <Button 
-              className="bg-brand-600 hover:bg-brand-700 text-white"
+              variant="teal"
               onClick={() => {
                 alert('Correct! In an RL rotation, the grandchild (left child of Y) rotates up to become the new root of the subtree.');
                 setIsQuizModalOpen(false);

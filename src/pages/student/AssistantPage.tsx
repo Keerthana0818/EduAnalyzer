@@ -15,7 +15,7 @@ export const AssistantPage: React.FC = () => {
   const [messages, setMessages] = useState([
     {
       role: 'assistant',
-      text: 'Hello Alex! I am your AI Study Assistant for CS-301. I am grounded in the lecture notes and slides uploaded by Prof. Jenkins. How can I help you master today’s concepts?',
+      text: 'Hello Alex! I am your AI Study Assistant for CS-301. I am grounded in the lecture notes and slides uploaded by Dr. Elena. How can I help you master today’s concepts?',
       timestamp: '10:00 AM',
     },
     {
@@ -31,6 +31,7 @@ export const AssistantPage: React.FC = () => {
   ]);
 
   const [input, setInput] = useState('');
+  const [isThinking, setIsThinking] = useState(false);
 
   const handleSend = (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,17 +46,18 @@ export const AssistantPage: React.FC = () => {
     setMessages((prev) => [...prev, userMsg]);
     const currentQuery = input;
     setInput('');
+    setIsThinking(true);
 
-    // Simulate AI response grounded in course context
     setTimeout(() => {
       setMessages((prev) => [
         ...prev,
         {
           role: 'assistant',
-          text: `Based on Prof. Jenkins's Unit 2 notes on "${currentQuery}", remember that the fundamental invariant is maintaining a balance factor between -1 and +1 for every node. Let me know if you would like step-by-step pseudo-code or an example calculation!`,
+          text: `Based on Dr. Elena's Unit 2 slides regarding "${currentQuery}":\n\nRemember the golden invariant: every node must have a balance factor between -1 and +1. When calculating subtree heights, always take 1 + max(left_height, right_height). If you want, I can step through an AVL deletion example on paper!`,
           timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         },
       ]);
+      setIsThinking(false);
     }, 800);
   };
 
@@ -65,25 +67,25 @@ export const AssistantPage: React.FC = () => {
         title="AI Study Assistant"
         description="Grounded in your course syllabus and professor's lecture slides to help you understand complex concepts."
         badge={
-          <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
-            <Sparkles className="w-3.5 h-3.5" /> Gemini 2.0 Context Grounded
+          <span className="inline-flex items-center gap-1 text-[11px] font-bold text-teal-300 bg-teal-500/20 px-3 py-1 rounded-full border border-teal-500/40 shadow-glow-teal">
+            <Sparkles className="w-3.5 h-3.5 text-teal-400" /> Gemini 2.0 Flash Context
           </span>
         }
       />
 
-      <Card className="flex flex-col h-[650px] overflow-hidden">
+      <Card className="flex flex-col h-[650px] overflow-hidden border border-white/10 bg-[#0C1220]/80 backdrop-blur-2xl shadow-glass">
         {/* Chat Header */}
-        <div className="px-5 py-3.5 border-b border-slate-100 bg-slate-50/70 flex items-center justify-between">
+        <div className="px-5 py-3.5 border-b border-white/[0.08] bg-white/[0.02] flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-teal-400 to-cyan-500 text-slate-950 font-bold flex items-center justify-center shadow-glow-teal">
               <Bot className="w-5 h-5" />
             </div>
             <div>
-              <h4 className="text-xs font-bold text-slate-800">Tutor: Data Structures & Algorithms</h4>
-              <p className="text-[11px] text-slate-400">Context: 3 Course Units • 15 Lecture PDFs Indexed</p>
+              <h4 className="text-xs font-bold text-white">Tutor: Algorithms & Cognitive AI</h4>
+              <p className="text-[10px] text-teal-400">Context: CS-301 Lecture Slides • Dr. Elena</p>
             </div>
           </div>
-          <Badge variant="outline" size="sm">CS-301</Badge>
+          <Badge variant="teal" size="sm">Active Session</Badge>
         </div>
 
         {/* Message Thread */}
@@ -93,16 +95,16 @@ export const AssistantPage: React.FC = () => {
             return (
               <div key={idx} className={`flex items-start gap-3 ${isUser ? 'flex-row-reverse' : ''}`}>
                 <div
-                  className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 text-xs font-bold ${isUser ? 'bg-brand-600 text-white' : 'bg-emerald-100 text-emerald-800'}`}
+                  className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 text-xs font-bold ${isUser ? 'bg-cyan-500 text-slate-950 shadow-glow-cyan' : 'bg-teal-500/20 text-teal-300 border border-teal-500/40'}`}
                 >
                   {isUser ? <User className="w-4 h-4" /> : <Bot className="w-4 h-4" />}
                 </div>
                 <div
-                  className={`p-3.5 rounded-2xl text-xs max-w-lg leading-relaxed ${isUser ? 'bg-brand-600 text-white rounded-tr-none' : 'bg-slate-100 text-slate-800 rounded-tl-none whitespace-pre-line'}`}
+                  className={`p-4 rounded-2xl text-xs max-w-lg leading-relaxed ${isUser ? 'bg-gradient-to-r from-cyan-600 to-teal-500 text-slate-950 font-semibold rounded-tr-none shadow-glow-teal' : 'bg-white/[0.04] border border-white/10 text-slate-200 rounded-tl-none whitespace-pre-line'}`}
                 >
                   {m.text}
                   <span
-                    className={`block text-[10px] mt-1.5 ${isUser ? 'text-brand-200 text-right' : 'text-slate-400'}`}
+                    className={`block text-[10px] mt-2 ${isUser ? 'text-slate-900/80 text-right' : 'text-slate-500'}`}
                   >
                     {m.timestamp}
                   </span>
@@ -110,18 +112,24 @@ export const AssistantPage: React.FC = () => {
               </div>
             );
           })}
+          {isThinking && (
+            <div className="flex items-center gap-2 text-xs text-teal-400 italic">
+              <Sparkles className="w-3.5 h-3.5 animate-spin" />
+              <span>Gemini is synthesizing explanation from lecture notes...</span>
+            </div>
+          )}
         </div>
 
         {/* Chat Input Bar */}
-        <form onSubmit={handleSend} className="p-3 bg-white border-t border-slate-100 flex items-center gap-2">
+        <form onSubmit={handleSend} className="p-3 bg-[#080C14] border-t border-white/[0.08] flex items-center gap-2">
           <Input
             placeholder="Ask a question about lecture notes, algorithms, or concepts..."
             value={input}
             onChange={(e) => setInput(e.target.value)}
             className="flex-1"
           />
-          <Button type="submit" className="bg-emerald-600 hover:bg-emerald-700 text-white" leftIcon={<Send className="w-4 h-4" />}>
-            Send
+          <Button type="submit" variant="teal" leftIcon={<Send className="w-4 h-4" />}>
+            Ask
           </Button>
         </form>
       </Card>

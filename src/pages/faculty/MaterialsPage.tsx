@@ -13,8 +13,10 @@ import {
   Download, 
   Sparkles
 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 export const MaterialsPage: React.FC = () => {
+  const navigate = useNavigate();
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
   const [selectedUnit, setSelectedUnit] = useState('all');
 
@@ -67,7 +69,7 @@ export const MaterialsPage: React.FC = () => {
             <Button variant="outline" leftIcon={<FolderPlus className="w-4 h-4" />}>
               Add Unit
             </Button>
-            <Button leftIcon={<UploadCloud className="w-4 h-4" />} onClick={() => setIsUploadModalOpen(true)}>
+            <Button variant="teal" leftIcon={<UploadCloud className="w-4 h-4 text-slate-950" />} onClick={() => setIsUploadModalOpen(true)}>
               Upload Material
             </Button>
           </div>
@@ -79,18 +81,18 @@ export const MaterialsPage: React.FC = () => {
         {units.map((u) => (
           <Card 
             key={u.id} 
-            className={`cursor-pointer transition-all ${selectedUnit === u.id ? 'border-brand-500 ring-2 ring-brand-100' : 'hover:border-slate-300'}`}
+            className={`cursor-pointer transition-all ${selectedUnit === u.id ? 'border-teal-400 ring-2 ring-teal-400/20' : 'hover:border-white/20'}`}
             onClick={() => setSelectedUnit(selectedUnit === u.id ? 'all' : u.id)}
           >
             <CardContent className="p-4 space-y-2">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-brand-600 bg-brand-50 px-2 py-0.5 rounded">
+                <span className="text-xs font-bold text-teal-300 bg-teal-500/10 px-2 py-0.5 rounded-full border border-teal-500/30">
                   Unit {u.number}
                 </span>
                 <span className="text-xs text-slate-400 font-medium">{u.filesCount} Files</span>
               </div>
-              <h4 className="text-sm font-bold text-slate-900 leading-snug">{u.title}</h4>
-              <p className="text-xs text-slate-500">{u.topicsCount} Topics categorized</p>
+              <h4 className="text-sm font-bold text-white leading-snug">{u.title}</h4>
+              <p className="text-xs text-slate-400">{u.topicsCount} Topics categorized</p>
             </CardContent>
           </Card>
         ))}
@@ -109,17 +111,17 @@ export const MaterialsPage: React.FC = () => {
             </Button>
           )}
         </CardHeader>
-        <CardContent className="p-0 divide-y divide-slate-100">
+        <CardContent className="p-0 divide-y divide-white/[0.06]">
           {materials.map((m) => (
-            <div key={m.id} className="p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-slate-50/70 transition-colors">
+            <div key={m.id} className="p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-white/[0.02] transition-colors">
               <div className="flex items-start gap-3.5">
-                <div className="p-2.5 rounded-xl bg-slate-100 text-slate-600 shrink-0 mt-0.5">
-                  <FileText className="w-5 h-5 text-brand-600" />
+                <div className="p-2.5 rounded-xl bg-white/[0.04] text-teal-400 shrink-0 mt-0.5 border border-white/10">
+                  <FileText className="w-5 h-5 text-teal-400" />
                 </div>
                 <div className="space-y-1">
-                  <h4 className="text-sm font-semibold text-slate-900">{m.title}</h4>
-                  <div className="flex flex-wrap items-center gap-2 text-xs text-slate-500">
-                    <span className="font-medium text-slate-700">Unit {m.unitNumber}: {m.unitTitle}</span>
+                  <h4 className="text-sm font-semibold text-white">{m.title}</h4>
+                  <div className="flex flex-wrap items-center gap-2 text-xs text-slate-400">
+                    <span className="font-semibold text-slate-200">Unit {m.unitNumber}: {m.unitTitle}</span>
                     <span>•</span>
                     <span>Topic: {m.topic}</span>
                     <span>•</span>
@@ -133,11 +135,16 @@ export const MaterialsPage: React.FC = () => {
               </div>
 
               <div className="flex items-center gap-2 self-start sm:self-center shrink-0">
-                <Button size="sm" variant="outline" leftIcon={<Sparkles className="w-3.5 h-3.5 text-brand-600" />}>
+                <Button 
+                  size="sm" 
+                  variant="outline" 
+                  leftIcon={<Sparkles className="w-3.5 h-3.5 text-teal-400" />}
+                  onClick={() => navigate('/faculty/questions')}
+                >
                   Generate Questions
                 </Button>
                 <Button size="sm" variant="ghost" className="p-2">
-                  <Download className="w-4 h-4 text-slate-500" />
+                  <Download className="w-4 h-4 text-slate-400" />
                 </Button>
               </div>
             </div>
@@ -152,7 +159,7 @@ export const MaterialsPage: React.FC = () => {
         title="Upload Course Material"
         description="Supported formats: PDF, DOCX, PPTX, TXT. File will be stored securely in Supabase Storage."
       >
-        <div className="space-y-4">
+        <div className="space-y-4 text-xs">
           <Select
             label="Target Unit"
             options={units.map((u) => ({ value: u.id, label: `Unit ${u.number}: ${u.title}` }))}
@@ -161,9 +168,9 @@ export const MaterialsPage: React.FC = () => {
           <Input label="Document Title" placeholder="e.g. Chapter 4 Slide Deck" required />
 
           {/* Drag & drop upload area */}
-          <div className="border-2 border-dashed border-slate-300 rounded-xl p-8 text-center bg-slate-50/60 hover:bg-slate-50 cursor-pointer transition-colors">
-            <UploadCloud className="w-10 h-10 text-brand-600 mx-auto mb-2" />
-            <p className="text-xs font-semibold text-slate-700">Click to upload or drag and drop</p>
+          <div className="border-2 border-dashed border-white/15 rounded-2xl p-8 text-center bg-white/[0.02] hover:bg-white/[0.05] cursor-pointer transition-colors">
+            <UploadCloud className="w-10 h-10 text-teal-400 mx-auto mb-2" />
+            <p className="text-xs font-semibold text-slate-200">Click to upload or drag and drop</p>
             <p className="text-[11px] text-slate-400 mt-1">PDF, DOCX, PPTX or TXT (Max 25MB)</p>
           </div>
 
@@ -171,7 +178,7 @@ export const MaterialsPage: React.FC = () => {
             <Button variant="outline" onClick={() => setIsUploadModalOpen(false)}>
               Cancel
             </Button>
-            <Button onClick={() => setIsUploadModalOpen(false)}>Upload Document</Button>
+            <Button variant="teal" onClick={() => setIsUploadModalOpen(false)}>Upload Document</Button>
           </div>
         </div>
       </Modal>

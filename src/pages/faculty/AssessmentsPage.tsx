@@ -60,7 +60,7 @@ export const AssessmentsPage: React.FC = () => {
         title="Assessments Management"
         description="Assemble timed quizzes, configure deterministic grading parameters, and publish assessments to enrolled students."
         actions={
-          <Button leftIcon={<Plus className="w-4 h-4" />} onClick={() => setIsModalOpen(true)}>
+          <Button variant="teal" leftIcon={<Plus className="w-4 h-4 text-slate-950" />} onClick={() => setIsModalOpen(true)}>
             Create Assessment
           </Button>
         }
@@ -68,25 +68,25 @@ export const AssessmentsPage: React.FC = () => {
 
       <div className="space-y-4">
         {assessments.map((a) => (
-          <Card key={a.id} className="hover:border-slate-300 transition-all">
+          <Card key={a.id} className="hover:border-teal-400/40 transition-all">
             <CardContent className="p-5 flex flex-col lg:flex-row lg:items-center justify-between gap-5">
               <div className="space-y-2">
                 <div className="flex flex-wrap items-center gap-2">
-                  <span className="text-xs font-bold text-brand-600 bg-brand-50 px-2 py-0.5 rounded border border-brand-200">
+                  <span className="text-xs font-bold text-teal-300 bg-teal-500/10 px-2.5 py-0.5 rounded-full border border-teal-500/30">
                     {a.courseCode}
                   </span>
                   <Badge variant={a.status === 'published' ? 'success' : 'default'} size="sm" className="capitalize">
                     {a.status}
                   </Badge>
-                  <span className="text-xs text-slate-500 flex items-center gap-1">
+                  <span className="text-xs text-slate-400 flex items-center gap-1">
                     <Clock className="w-3.5 h-3.5 text-slate-400" />
                     {a.duration} Minutes
                   </span>
-                  <span className="text-xs text-slate-500">• {a.totalMarks} Total Marks</span>
-                  <span className="text-xs text-slate-500">• {a.questionsCount} Questions</span>
+                  <span className="text-xs text-slate-400">• {a.totalMarks} Total Marks</span>
+                  <span className="text-xs text-slate-400">• {a.questionsCount} Questions</span>
                 </div>
 
-                <h3 className="text-base font-bold text-slate-900">{a.title}</h3>
+                <h3 className="text-base font-bold text-white">{a.title}</h3>
 
                 <div className="flex items-center gap-1.5 pt-1">
                   <span className="text-[11px] text-slate-400 font-medium">Cognitive Focus:</span>
@@ -99,31 +99,31 @@ export const AssessmentsPage: React.FC = () => {
               </div>
 
               {/* Stats & Actions */}
-              <div className="flex flex-wrap items-center gap-6 lg:border-l lg:border-slate-100 lg:pl-6">
+              <div className="flex flex-wrap items-center gap-6 lg:border-l lg:border-white/10 lg:pl-6">
                 <div>
-                  <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block">
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
                     Participation
                   </span>
-                  <span className="text-sm font-bold text-slate-800">
+                  <span className="text-sm font-bold text-white">
                     {a.submissionsCount} / {a.totalStudents} ({Math.round((a.submissionsCount / a.totalStudents) * 100)}%)
                   </span>
                 </div>
 
                 <div>
-                  <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block">
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
                     Class Average
                   </span>
-                  <span className="text-sm font-bold text-emerald-600">
+                  <span className="text-sm font-bold text-teal-400">
                     {a.avgScore > 0 ? `${a.avgScore} / ${a.totalMarks}` : 'N/A (Draft)'}
                   </span>
                 </div>
 
                 <div className="flex items-center gap-2">
                   <Button size="sm" variant="outline" leftIcon={<Eye className="w-3.5 h-3.5" />}>
-                    Results & Heatmap
+                    Results
                   </Button>
                   {a.status === 'draft' ? (
-                    <Button size="sm" leftIcon={<Send className="w-3.5 h-3.5" />}>
+                    <Button size="sm" variant="teal" leftIcon={<Send className="w-3.5 h-3.5 text-slate-950" />}>
                       Publish
                     </Button>
                   ) : (
@@ -145,7 +145,7 @@ export const AssessmentsPage: React.FC = () => {
         title="Create New Assessment"
         description="Set assessment duration, passing thresholds, and select questions from your Bloom-mapped question bank."
       >
-        <div className="space-y-4">
+        <div className="space-y-4 text-xs">
           <Input label="Assessment Title" placeholder="e.g. Unit 2 Quiz: Balanced Trees" required />
           <Select
             label="Course"
@@ -158,14 +158,14 @@ export const AssessmentsPage: React.FC = () => {
             <Input label="Duration (Minutes)" type="number" defaultValue="30" required />
             <Input label="Passing Score (%)" type="number" defaultValue="60" required />
           </div>
-          <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs text-slate-600">
+          <div className="p-3 bg-white/[0.04] rounded-xl border border-white/10 text-xs text-slate-300">
             Once created, you can link questions from your AI Question Bank and release the assessment to enrolled students with deterministic auto-grading.
           </div>
           <div className="flex justify-end gap-2 pt-2">
             <Button variant="outline" onClick={() => setIsModalOpen(false)}>
               Cancel
             </Button>
-            <Button onClick={() => setIsModalOpen(false)}>Create & Assemble Questions</Button>
+            <Button variant="teal" onClick={() => setIsModalOpen(false)}>Create & Assemble Questions</Button>
           </div>
         </div>
       </Modal>

@@ -8,7 +8,7 @@ export interface ProgressBarProps {
   max?: number;
   label?: string;
   showValue?: boolean;
-  variant?: 'brand' | 'success' | 'warning' | 'danger' | BloomLevel;
+  variant?: 'brand' | 'success' | 'warning' | 'danger' | 'teal' | 'coral' | BloomLevel;
   size?: 'sm' | 'md' | 'lg';
   className?: string;
 }
@@ -18,7 +18,7 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
   max = 100,
   label,
   showValue = false,
-  variant = 'brand',
+  variant = 'teal',
   size = 'md',
   className,
 }) => {
@@ -28,13 +28,15 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
   const heights = {
     sm: 'h-1.5',
     md: 'h-2.5',
-    lg: 'h-4',
+    lg: 'h-3.5',
   };
 
   const colors: Record<string, string> = {
-    brand: 'bg-brand-600',
-    success: 'bg-emerald-500',
-    warning: 'bg-amber-500',
+    teal: 'bg-gradient-to-r from-teal-400 to-cyan-400 shadow-[0_0_10px_rgba(0,229,190,0.5)]',
+    coral: 'bg-gradient-to-r from-rose-500 to-coral-400 shadow-[0_0_10px_rgba(255,100,124,0.5)]',
+    brand: 'bg-gradient-to-r from-indigo-500 to-teal-400',
+    success: 'bg-emerald-400',
+    warning: 'bg-amber-400',
     danger: 'bg-rose-500',
   };
 
@@ -46,16 +48,17 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
     <div className={cn('w-full', className)}>
       {(label || showValue) && (
         <div className="flex justify-between items-center text-xs mb-1.5">
-          {label && <span className="font-medium text-slate-700">{label}</span>}
-          {showValue && <span className="font-semibold text-slate-900">{percentage}%</span>}
+          {label && <span className="font-semibold text-slate-300">{label}</span>}
+          {showValue && <span className="font-bold text-teal-300">{percentage}%</span>}
         </div>
       )}
-      <div className={cn('w-full bg-slate-100 rounded-full overflow-hidden', heights[size])}>
+      <div className={cn('w-full bg-white/[0.08] rounded-full overflow-hidden p-0.5 border border-white/[0.05]', heights[size])}>
         <div
           className={cn('h-full transition-all duration-500 rounded-full', !isBloom && colors[variant])}
           style={{
             width: `${percentage}%`,
             backgroundColor: fillColor,
+            boxShadow: fillColor ? `0 0 10px ${fillColor}` : undefined,
           }}
         />
       </div>
